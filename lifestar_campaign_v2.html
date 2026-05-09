@@ -1,0 +1,425 @@
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.0.3/Vazirmatn-font-face.css">
+<style>
+:root{--bg:#0b0b16;--s1:#111120;--s2:#181828;--red:#c8102e;--purp:#5c20b0;--purpL:#8858e8;--gold:#e8a812;--txt:#f0f0ff;--mut:#7880a8;--bdr:rgba(255,255,255,0.07);--rr:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+.app{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;direction:rtl;width:100%;max-width:390px;margin:8px auto;background:var(--bg);border-radius:22px;border:1px solid var(--bdr);overflow:hidden;display:flex;flex-direction:column;height:608px;position:relative}
+.scr{flex:1;overflow-y:auto;scrollbar-width:none;position:relative;z-index:1}
+.scr::-webkit-scrollbar{display:none}
+.bnav{display:flex;background:var(--s1);border-top:1px solid var(--bdr);padding:8px 0 10px;flex-shrink:0;position:relative;z-index:2}
+.bnav button{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mut);font-size:9px;font-family:inherit;padding:2px}
+.bnav button.on{color:var(--red)}
+.bnav button .ic{font-size:19px}
+.px{padding:0 18px}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rr);padding:15px}
+.btn{width:100%;border:none;border-radius:var(--rr);padding:15px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-r{background:var(--red);color:#fff}
+.btn-o{background:none;border:1px solid var(--bdr);color:var(--mut);margin-top:8px}
+.tag{display:inline-block;padding:4px 13px;border-radius:100px;font-size:10px;font-weight:700;margin-bottom:11px}
+input[type=tel],input[type=text]{width:100%;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--rr);padding:13px 15px;color:var(--txt);font-size:16px;font-family:inherit;direction:ltr;text-align:center;outline:none;margin-bottom:11px}
+input:focus{border-color:var(--red)}
+.otp-in{width:100%;background:var(--s2);border:2px solid var(--red);border-radius:17px;padding:17px;color:var(--txt);font-size:24px;text-align:center;letter-spacing:12px;direction:ltr;font-family:inherit;outline:none;margin-bottom:13px}
+.stat{flex:1;text-align:center;padding:9px}
+.stat .v{font-size:20px;font-weight:900}
+.stat .l{font-size:9px;color:var(--mut);margin-top:2px}
+.divv{width:1px;background:var(--bdr)}
+.srow{display:flex;align-items:center;gap:11px;padding:12px 13px;background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rr);margin-bottom:7px}
+.sico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.ga{position:relative;height:268px;background:var(--s2);overflow:hidden;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
+.gstar{position:absolute;font-size:28px;cursor:pointer;background:none;border:none;padding:5px;transform:translate(-50%,-50%);line-height:1;transition:transform .1s}
+.govl{position:absolute;inset:0;background:rgba(11,11,22,.92);display:flex;align-items:center;justify-content:center;z-index:10}
+.pcard{background:var(--s1);border:1px solid var(--bdr);border-radius:17px;padding:15px;margin-bottom:8px;display:flex;align-items:center;gap:13px}
+.pico{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0}
+.hdot{position:absolute;border-radius:50%;background:#fff}
+.badge{display:inline-block;background:rgba(200,16,46,.14);border:1px solid rgba(200,16,46,.25);border-radius:100px;padding:3px 10px;color:var(--red);font-size:9px;font-weight:700}
+@keyframes twk{0%,100%{opacity:.12}50%{opacity:.65}}
+@keyframes bigpop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+</style>
+
+<div>
+<div class="app" id="app">
+  <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0" id="strs"></div>
+  <div class="scr" id="sc"></div>
+  <nav class="bnav" id="bn" style="display:none">
+    <button data-s="home" onclick="LS.go('home')"><span class="ic">🏠</span>خانه</button>
+    <button data-s="game" onclick="LS.go('game')"><span class="ic">🎮</span>بازی</button>
+    <button data-s="prizes" onclick="LS.go('prizes')"><span class="ic">🏆</span>جوایز</button>
+    <button data-s="profile" onclick="LS.go('profile')"><span class="ic">⭐</span>پروفایل</button>
+  </nav>
+</div>
+</div>
+
+<script>
+window.LS = (function(){
+  var S = {scr:'phone', ph:'', cans:3, pts:1250, fr:3, gs:0, gt:30, gp:false};
+  var GI = {};
+
+  function initStars(){
+    var c=document.getElementById('strs');
+    for(var i=0;i<55;i++){
+      var d=document.createElement('div');
+      d.className='hdot';
+      var sz=Math.random()*2+.5;
+      d.style.cssText='left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;width:'+sz+'px;height:'+sz+'px;opacity:'+(Math.random()*.4+.1)+';animation:twk '+(2+Math.random()*2)+'s ease-in-out '+(Math.random()*3)+'s infinite';
+      c.appendChild(d);
+    }
+  }
+
+  function killGI(){Object.keys(GI).forEach(function(k){clearInterval(GI[k]);});GI={};S.gp=false;}
+
+  function go(s){
+    killGI();
+    S.scr=s;
+    var ob=['phone','otp','success'];
+    var bn=document.getElementById('bn');
+    bn.style.display=ob.indexOf(s)>=0?'none':'flex';
+    document.querySelectorAll('#bn button').forEach(function(b){b.className=b.dataset.s===s?'on':'';});
+    render();
+  }
+
+  function render(){
+    var f={phone:Ph,otp:OT,success:Su,home:Ho,profile:Pr,game:Gm,prizes:Pz};
+    document.getElementById('sc').innerHTML=(f[S.scr]||Ph)();
+    document.getElementById('sc').scrollTop=0;
+    if(S.scr==='otp') startOTP();
+  }
+
+  // ── PHONE ──────────────────────────────
+  function Ph(){
+    return '<div style="padding:36px 18px 20px">'+
+      '<div style="text-align:center;margin-bottom:22px">'+
+        '<div style="font-size:10px;letter-spacing:4px;color:var(--mut);font-weight:600">LIFE</div>'+
+        '<div style="font-size:40px;font-weight:900;color:var(--txt);line-height:.9;letter-spacing:-2px">⭐STAR</div>'+
+        '<div style="font-size:8px;letter-spacing:2px;color:var(--mut);margin-top:4px">ENERGY DRINK</div>'+
+      '</div>'+
+      '<div style="text-align:center;margin-bottom:22px">'+
+        '<div style="width:80px;height:130px;margin:0 auto;background:var(--red);border-radius:40px;display:flex;align-items:center;justify-content:center;font-size:32px">⚡</div>'+
+      '</div>'+
+      '<h2 style="color:var(--txt);font-size:17px;font-weight:900;text-align:center;margin-bottom:5px;line-height:1.3">شانس بردن BMW X5<br>رو به دست آوردی!</h2>'+
+      '<p style="color:var(--mut);font-size:11px;text-align:center;line-height:1.85;margin-bottom:22px">شماره‌ات رو وارد کن تا شانست ثبت بشه.</p>'+
+      '<input type="tel" id="phi" placeholder="۰۹۱۲ ..." maxlength="11" oninput="LS.setPhone(this.value)">'+
+      '<button class="btn btn-r" onclick="LS.tryNext()">بزن بریم ←</button>'+
+      '<p style="color:var(--mut);font-size:9px;text-align:center;margin-top:11px;line-height:1.6">با ادامه، موافق قوانین جشنواره لایف‌استار هستی</p>'+
+    '</div>';
+  }
+
+  // ── OTP ─────────────────────────────────
+  var otpSec=270;
+  function startOTP(){
+    otpSec=270;
+    GI.otp=setInterval(function(){
+      otpSec--;
+      var el=document.getElementById('otpT');
+      if(el){var m=String(Math.floor(otpSec/60)).padStart(2,'0');el.textContent=m+':'+String(otpSec%60).padStart(2,'0');}
+      if(otpSec<=0)clearInterval(GI.otp);
+    },1000);
+  }
+
+  function OT(){
+    return '<div style="padding:36px 18px 20px">'+
+      '<button onclick="LS.go(\'phone\')" style="background:none;border:none;color:var(--mut);cursor:pointer;font-size:18px;margin-bottom:20px;font-family:inherit">←</button>'+
+      '<h2 style="color:var(--txt);font-size:19px;font-weight:900;margin-bottom:5px">کد رسید؟</h2>'+
+      '<p style="color:var(--mut);font-size:11px;line-height:1.9;margin-bottom:22px">کد ۴ رقمی که به <b style="color:var(--txt)">'+(S.ph||'09120000000')+'</b><br>فرستادیم رو وارد کن.</p>'+
+      '<input class="otp-in" type="text" maxlength="4" placeholder="- - - -">'+
+      '<div style="text-align:center;margin-bottom:20px">'+
+        '<div style="color:var(--gold);font-size:17px;font-weight:800;margin-bottom:4px" id="otpT">04:30</div>'+
+        '<button style="background:none;border:none;color:var(--mut);cursor:pointer;font-size:10px;font-family:inherit;text-decoration:underline">کد رو دوباره بفرست</button>'+
+      '</div>'+
+      '<button class="btn btn-r" onclick="LS.go(\'success\')">تأییدش می‌کنم ✓</button>'+
+    '</div>';
+  }
+
+  // ── SUCCESS ─────────────────────────────
+  function Su(){
+    return '<div style="padding:48px 18px 20px;text-align:center">'+
+      '<div style="font-size:64px;margin-bottom:16px;animation:bigpop .4s ease both">🌟</div>'+
+      '<h2 style="color:var(--txt);font-size:19px;font-weight:900;margin-bottom:8px;line-height:1.35">حالا یک شانس<br>برای بردن داری!</h2>'+
+      '<p style="color:var(--mut);font-size:11px;line-height:1.95;margin-bottom:26px">با اسکن هر QR کد در درب قوطی،<br>یه شانس جدید برای بردن به دست میاری.</p>'+
+      '<div class="card" style="display:flex;margin-bottom:22px;background:var(--s2)">'+
+        '<div class="stat"><div class="v" style="color:var(--red)">'+S.cans+'</div><div class="l">قوطی</div></div>'+
+        '<div class="divv"></div>'+
+        '<div class="stat"><div class="v" style="color:var(--gold)">'+S.cans+'</div><div class="l">شانس BMW</div></div>'+
+        '<div class="divv"></div>'+
+        '<div class="stat"><div class="v" style="color:var(--purpL)">'+S.fr+'</div><div class="l">دوست</div></div>'+
+      '</div>'+
+      '<button class="btn btn-r" onclick="LS.go(\'home\')" style="margin-bottom:8px">صفحه اصلی</button>'+
+      '<button class="btn btn-o" onclick="LS.go(\'profile\')">+ قوطی جدید اضافه کن</button>'+
+    '</div>';
+  }
+
+  // ── HOME ────────────────────────────────
+  function Ho(){
+    var steps=[
+      ['🛒','rgba(200,16,46,.14)','خرید کن','لایف‌استار رو از سوپرمارکت‌ها و هایپرها تهیه کن'],
+      ['📱','rgba(92,32,176,.14)','اسکن کن','QR زیر درب قوطی رو اسکن کن'],
+      ['🌟','rgba(232,168,18,.14)','ثبت کن','شماره‌ات رو وارد کن تا شانست ثبت بشه'],
+      ['🏆','rgba(139,88,232,.14)','ببر!','هر دو هفته و آخر کمپین قرعه‌کشی داریم'],
+    ];
+    return '<div style="padding-bottom:6px">'+
+      '<div style="padding:36px 18px 20px;background:var(--s1)">'+
+        '<span class="tag" style="background:rgba(200,16,46,.14);color:var(--red);border:1px solid rgba(200,16,46,.2)">🎊 جشنواره لایف‌استار ۱۴۰۵</span>'+
+        '<h1 style="color:var(--txt);font-size:22px;font-weight:900;line-height:1.2;margin-bottom:7px;letter-spacing:-.5px">با هر قوطی<br>یه ستاره‌ی جدید</h1>'+
+        '<p style="color:var(--mut);font-size:11px;line-height:1.85;margin-bottom:18px">خرید کن، اسکن کن، BMW ببر.<br>هر قوطی لایف‌استار یه شانس واقعیه.</p>'+
+        '<div style="display:flex;gap:7px">'+
+          [['۱٬۲۰۰+','شرکت‌کننده'],['۲۵۰','جایزه'],['۳','برنده']].map(function(s){
+            return '<div class="card" style="flex:1;padding:9px 6px;text-align:center;margin:0">'+
+              '<div style="color:var(--red);font-size:15px;font-weight:900">'+s[0]+'</div>'+
+              '<div style="color:var(--mut);font-size:8px;margin-top:2px">'+s[1]+'</div>'+
+            '</div>';
+          }).join('')+
+        '</div>'+
+      '</div>'+
+      // Prize mechanic banner
+      '<div class="px" style="padding-top:16px">'+
+        '<div style="background:var(--s1);border:1px solid rgba(232,168,18,.2);border-radius:16px;padding:16px">'+
+          '<div style="color:var(--gold);font-size:11px;font-weight:700;margin-bottom:10px">🎁 ساختار جوایز</div>'+
+          '<div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">'+
+            '<div style="width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:4px;flex-shrink:0"></div>'+
+            '<div style="color:var(--txt);font-size:10px;line-height:1.7">هر قوطی = ۱ شانس در قرعه‌کشی نهایی BMW X5</div>'+
+          '</div>'+
+          '<div style="display:flex;gap:8px;align-items:flex-start">'+
+            '<div style="width:6px;height:6px;border-radius:50%;background:var(--purpL);margin-top:4px;flex-shrink:0"></div>'+
+            '<div style="color:var(--txt);font-size:10px;line-height:1.7">هر خرید در طول ۲ هفته = شرکت در قرعه‌کشی دو هفتگی (آیفون، موتور، AirPods و...)</div>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      // Steps
+      '<div class="px" style="padding-top:14px">'+
+        '<h3 style="color:var(--txt);font-size:13px;font-weight:800;margin-bottom:10px">چطور بازی می‌کنی؟</h3>'+
+        steps.map(function(s){
+          return '<div class="srow">'+
+            '<div class="sico" style="background:'+s[1]+'">'+s[0]+'</div>'+
+            '<div><b style="color:var(--txt);font-size:12px">'+s[2]+'</b>'+
+            '<div style="color:var(--mut);font-size:10px;margin-top:1px">'+s[3]+'</div></div>'+
+          '</div>';
+        }).join('')+
+      '</div>'+
+      // Prizes teaser
+      '<div class="px" style="padding-top:14px">'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'+
+          '<h3 style="color:var(--txt);font-size:13px;font-weight:800">جوایز بزرگ</h3>'+
+          '<button onclick="LS.go(\'prizes\')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:10px;font-family:inherit">همه →</button>'+
+        '</div>'+
+        '<div class="card" style="display:flex;align-items:center;gap:12px">'+
+          '<div style="width:48px;height:48px;background:rgba(232,168,18,.14);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0">🚗</div>'+
+          '<div>'+
+            '<div style="color:var(--gold);font-size:9px;font-weight:700;margin-bottom:2px">جایزه نهایی کمپین</div>'+
+            '<div style="color:var(--txt);font-size:14px;font-weight:800">BMW X5</div>'+
+            '<div style="color:var(--mut);font-size:10px">۱ نفر · قرعه‌کشی پایان کمپین</div>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      // Game CTA
+      '<div class="px" style="padding-top:10px">'+
+        '<div style="background:var(--purp);border-radius:15px;padding:17px;cursor:pointer" onclick="LS.go(\'game\')">'+
+          '<div style="color:#fff;font-size:14px;font-weight:800;margin-bottom:3px">🎮 بازی کن، شانس ببر</div>'+
+          '<div style="color:rgba(255,255,255,.58);font-size:10px;margin-bottom:13px">Monster Hunter رو بازی کن و شانس دو هفتگی بیشتر بگیر</div>'+
+          '<button style="background:#fff;border:none;border-radius:9px;padding:7px 16px;color:var(--purp);font-weight:700;cursor:pointer;font-family:inherit;font-size:11px">شروع بازی ←</button>'+
+        '</div>'+
+      '</div>'+
+      // FAQ
+      '<div class="px" style="padding-top:14px;padding-bottom:14px">'+
+        '<h3 style="color:var(--txt);font-size:13px;font-weight:800;margin-bottom:10px">سوالات متداول</h3>'+
+        [['چطور در قرعه‌کشی BMW شرکت کنم؟','هر بار که یه قوطی لایف‌استار می‌خری و QR زیر درب رو اسکن می‌کنی، یه شانس در قرعه‌کشی BMW ثبت میشه.'],
+         ['قرعه‌کشی دو هفتگی چیه؟','هر ۲ هفته یه قرعه‌کشی جداگانه داریم با جوایز آیفون، موتور و AirPods. اگه تو اون ۲ هفته قوطی خریده باشی، شرکت داری.']].map(function(f){
+          return '<div class="card" style="margin-bottom:7px">'+
+            '<div style="color:var(--red);font-size:11px;font-weight:700;margin-bottom:4px">'+f[0]+'</div>'+
+            '<div style="color:var(--mut);font-size:10px;line-height:1.7">'+f[1]+'</div>'+
+          '</div>';
+        }).join('')+
+      '</div>'+
+    '</div>';
+  }
+
+  // ── PROFILE ─────────────────────────────
+  function Pr(){
+    return '<div style="padding-bottom:6px">'+
+      '<div style="padding:36px 18px 20px;background:var(--s1)">'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">'+
+          '<div>'+
+            '<div style="color:var(--mut);font-size:9px;margin-bottom:2px">خوش اومدی</div>'+
+            '<div style="color:var(--txt);font-size:17px;font-weight:800">ستاره ⭐</div>'+
+          '</div>'+
+          '<div style="width:40px;height:40px;background:var(--s2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;border:1px solid var(--bdr)">👤</div>'+
+        '</div>'+
+        '<div style="background:var(--s2);border-radius:15px;padding:15px;border:1px solid var(--bdr)">'+
+          '<div style="display:flex;justify-content:space-around">'+
+            '<div class="stat"><div class="v" style="color:var(--red)">'+S.cans+'</div><div class="l">قوطی اسکن شده</div></div>'+
+            '<div class="divv"></div>'+
+            '<div class="stat"><div class="v" style="color:var(--gold)">'+S.cans+'</div><div class="l">شانس BMW</div></div>'+
+            '<div class="divv"></div>'+
+            '<div class="stat"><div class="v" style="color:var(--purpL)">'+S.fr+'</div><div class="l">دوست دعوت شده</div></div>'+
+          '</div>'+
+        '</div>'+
+        // Active period badge
+        '<div style="margin-top:12px;padding:11px 14px;background:rgba(92,32,176,.15);border:1px solid rgba(92,32,176,.25);border-radius:12px">'+
+          '<div style="color:var(--purpL);font-size:10px;font-weight:700;margin-bottom:2px">⏰ دوره فعال: ۱–۱۵ خرداد ۱۴۰۵</div>'+
+          '<div style="color:var(--mut);font-size:9px;line-height:1.6">قوطی‌های این دوره در قرعه‌کشی دو هفتگی شرکت دارن</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="px" style="padding-top:16px">'+
+        '<h3 style="color:var(--txt);font-size:13px;font-weight:800;margin-bottom:10px">راه‌های کسب شانس بیشتر</h3>'+
+        [['📱','rgba(139,88,232,.14)','دعوت از دوستان','هر دوست دعوت شده = شانس دو هفتگی بیشتر','دعوت کن','var(--purpL)',''],
+         ['🎮','rgba(200,16,46,.14)','بازی Monster Hunter','هر ۱۰۰ امتیاز = ۱ شانس دو هفتگی اضافه','بازی کن','var(--red)',"LS.go('game')"],
+         ['🛒','rgba(232,168,18,.14)','قوطی جدید اضافه کن','هر قوطی = ۱ شانس BMW + شانس دو هفتگی','اسکن','var(--gold)',"LS.go('phone')"]].map(function(r){
+          return '<div class="srow">'+
+            '<div class="sico" style="background:'+r[1]+'">'+r[0]+'</div>'+
+            '<div style="flex:1">'+
+              '<b style="color:var(--txt);font-size:11px">'+r[2]+'</b>'+
+              '<div style="color:var(--mut);font-size:9px;margin-top:1px">'+r[3]+'</div>'+
+            '</div>'+
+            '<button onclick="'+r[6]+'" style="background:none;border:1px solid '+r[5]+';border-radius:8px;padding:5px 11px;color:'+r[5]+';font-size:9px;font-weight:700;cursor:pointer;font-family:inherit">'+r[4]+'</button>'+
+          '</div>';
+        }).join('')+
+      '</div>'+
+      '<div class="px" style="padding-top:12px;padding-bottom:12px">'+
+        '<h3 style="color:var(--txt);font-size:13px;font-weight:800;margin-bottom:10px">قوطی‌های ثبت شده</h3>'+
+        [['88 97654 67 8 2 1','دیروز'],['88 97654 67 8 2 2','۲ روز پیش'],['88 97654 67 8 2 3','۴ روز پیش']].map(function(q){
+          return '<div style="display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--s1);border:1px solid var(--bdr);border-radius:12px;margin-bottom:6px">'+
+            '<div style="width:30px;height:30px;background:rgba(200,16,46,.14);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px">🥫</div>'+
+            '<div style="flex:1">'+
+              '<div style="color:var(--txt);font-size:10px;font-weight:600">QR Code: '+q[0]+'</div>'+
+              '<div style="color:var(--mut);font-size:9px;margin-top:1px">'+q[1]+'</div>'+
+            '</div>'+
+            '<span style="background:rgba(139,88,232,.15);color:var(--purpL);font-size:8px;font-weight:700;padding:3px 7px;border-radius:6px">فعال</span>'+
+          '</div>';
+        }).join('')+
+        '<button onclick="LS.go(\'phone\')" style="width:100%;background:none;border:1px dashed var(--bdr);border-radius:12px;padding:12px;color:var(--mut);font-size:11px;cursor:pointer;font-family:inherit">+ افزودن QR کد جدید</button>'+
+      '</div>'+
+    '</div>';
+  }
+
+  // ── GAME ────────────────────────────────
+  function Gm(){
+    return '<div>'+
+      '<div style="padding:36px 18px 14px;background:var(--s1)">'+
+        '<span class="tag" style="background:rgba(92,32,176,.18);color:var(--purpL);border:1px solid rgba(92,32,176,.28)">🎮 مینی گیم</span>'+
+        '<h1 style="color:var(--txt);font-size:19px;font-weight:900;margin-bottom:4px">Monster Hunter</h1>'+
+        '<p style="color:var(--mut);font-size:10px;line-height:1.7">ستاره‌ها رو شکار کن! هر ۱۰۰ امتیاز = ۱ شانس دو هفتگی بیشتر</p>'+
+      '</div>'+
+      '<div style="background:var(--s1);border-bottom:1px solid var(--bdr);padding:7px 18px;display:flex;justify-content:space-between">'+
+        '<div style="background:var(--s2);border-radius:8px;padding:5px 13px;color:var(--gold);font-size:13px;font-weight:800">⭐ <span id="GS">0</span></div>'+
+        '<div style="background:var(--s2);border-radius:8px;padding:5px 13px;color:var(--txt);font-size:13px;font-weight:800">⏱ <span id="GT">30</span></div>'+
+      '</div>'+
+      '<div class="ga" id="GA">'+
+        '<div class="govl" id="GOV">'+
+          '<div style="text-align:center;padding:18px">'+
+            '<div style="font-size:40px;margin-bottom:10px">🎮</div>'+
+            '<div style="color:var(--txt);font-size:15px;font-weight:800;margin-bottom:3px">Monster Hunter</div>'+
+            '<div style="color:var(--mut);font-size:10px;margin-bottom:18px;line-height:1.7">روی ستاره‌ها کلیک کن<br>۳۰ ثانیه فرصت داری</div>'+
+            '<button id="startBtn" style="background:var(--purp);border:none;border-radius:12px;padding:12px 28px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">🎮 شروع بازی</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="px" style="padding-top:14px">'+
+        [['👆','روی ستاره‌ها کلیک کن'],['⭐','هر ستاره ۱۰ امتیاز داره'],['⏱','۳۰ ثانیه فرصت داری'],['🎯','هر ۱۰۰ امتیاز = ۱ شانس']].map(function(r){
+          return '<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;color:var(--mut);font-size:10px"><span style="font-size:15px">'+r[0]+'</span>'+r[1]+'</div>';
+        }).join('')+
+      '</div>'+
+    '</div>';
+  }
+
+  function startGame(){
+    S.gs=0; S.gt=30; S.gp=true;
+    var gov=document.getElementById('GOV');
+    if(gov) gov.style.display='none';
+    killGI();
+    GI.tmr=setInterval(function(){
+      S.gt--;
+      var el=document.getElementById('GT'); if(el) el.textContent=S.gt;
+      if(S.gt<=0){killGI(); gameOver();}
+    },1000);
+    GI.spn=setInterval(function(){
+      if(!S.gp) return;
+      var ga=document.getElementById('GA'); if(!ga) return;
+      var b=document.createElement('button');
+      var id='g'+Date.now()+Math.floor(Math.random()*999);
+      b.id=id; b.className='gstar'; b.textContent='⭐';
+      b.style.left=(10+Math.random()*78)+'%';
+      b.style.top=(10+Math.random()*68)+'%';
+      b.setAttribute('onclick','window.LS.hitStar("'+id+'")');
+      ga.appendChild(b);
+      setTimeout(function(){var e=document.getElementById(id);if(e)e.remove();},2100);
+    },650);
+  }
+
+  function hitStar(id){
+    var el=document.getElementById(id); if(!el) return;
+    el.style.transform='translate(-50%,-50%) scale(1.5)';
+    setTimeout(function(){if(el.parentNode)el.remove();},80);
+    S.gs+=10;
+    var gs=document.getElementById('GS'); if(gs) gs.textContent=S.gs;
+  }
+
+  function gameOver(){
+    var gov=document.getElementById('GOV'); if(!gov) return;
+    var b=Math.floor(S.gs/100);
+    if(b>0) S.cans+=b;
+    gov.innerHTML='<div style="text-align:center;padding:18px">'+
+      '<div style="color:var(--gold);font-size:44px;font-weight:900;margin-bottom:3px">'+S.gs+'</div>'+
+      '<div style="color:var(--mut);font-size:11px;margin-bottom:7px">امتیاز کسب کردی</div>'+
+      (b>0
+        ?'<div style="color:var(--red);font-size:12px;font-weight:700;margin-bottom:16px">🌟 '+b+' شانس دو هفتگی ثبت شد!</div>'
+        :'<div style="color:var(--mut);font-size:11px;margin-bottom:16px">بیشتر تلاش کن — ۱۰۰ امتیاز = ۱ شانس</div>')+
+      '<button id="restartBtn" style="background:var(--purp);border:none;border-radius:12px;padding:11px 26px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">🔄 دوباره بازی کن</button>'+
+    '</div>';
+    gov.style.display='flex';
+    setTimeout(function(){
+      var rb=document.getElementById('restartBtn');
+      if(rb) rb.addEventListener('click', startGame);
+      var sb=document.getElementById('startBtn');
+      if(sb) sb.addEventListener('click', startGame);
+    },50);
+  }
+
+  // ── PRIZES ──────────────────────────────
+  function Pz(){
+    var ps=[
+      ['🚗','جایزه نهایی کمپین','BMW X5','۱','rgba(232,168,18,.14)','var(--gold)','قرعه‌کشی پایان کمپین'],
+      ['📱','قرعه‌کشی دو هفتگی','iPhone 16 Pro','۱۰','rgba(200,16,46,.14)','var(--red)','هر ۲ هفته'],
+      ['🏍','قرعه‌کشی دو هفتگی','موتور شاسی بلند','۳','rgba(139,88,232,.14)','var(--purpL)','هر ۲ هفته'],
+      ['🎧','قرعه‌کشی دو هفتگی','AirPods Pro','۵۰','rgba(92,32,176,.14)','var(--purpL)','هر ۲ هفته'],
+      ['🎁','جوایز روزانه','کارت هدیه','۲۰۰+','rgba(255,255,255,.04)','var(--mut)','هر روز'],
+    ];
+    return '<div>'+
+      '<div style="padding:36px 18px 16px;background:var(--s1)">'+
+        '<h1 style="color:var(--txt);font-size:19px;font-weight:900;margin-bottom:4px">جوایز جشنواره</h1>'+
+        '<p style="color:var(--mut);font-size:10px">۲۵۰ جایزه در انتظار ستاره‌هاست</p>'+
+      '</div>'+
+      '<div class="px" style="padding-top:14px;padding-bottom:14px">'+
+        ps.map(function(p){
+          return '<div class="pcard">'+
+            '<div class="pico" style="background:'+p[4]+'">'+p[0]+'</div>'+
+            '<div style="flex:1">'+
+              '<div style="color:'+p[5]+';font-size:8px;font-weight:700;margin-bottom:2px">'+p[1]+'</div>'+
+              '<div style="color:var(--txt);font-size:13px;font-weight:800">'+p[2]+'</div>'+
+              '<div style="color:var(--mut);font-size:9px;margin-top:1px">'+p[3]+' نفر · '+p[6]+'</div>'+
+            '</div>'+
+          '</div>';
+        }).join('')+
+        '<p style="color:var(--mut);font-size:9px;text-align:center;margin-top:6px;line-height:1.7">قرعه‌کشی دو هفتگی هر دوشنبه · اعلام در سایت و اینستاگرام</p>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function init(){
+    initStars();
+    render();
+    // Attach game start button after each render via event delegation
+    document.getElementById('sc').addEventListener('click', function(e){
+      if(e.target && e.target.id==='startBtn') startGame();
+      if(e.target && e.target.id==='restartBtn') startGame();
+    });
+  }
+
+  return {
+    go: go,
+    setPhone: function(v){ S.ph=v; },
+    tryNext: function(){ var i=document.getElementById('phi'); if(i&&i.value.length>=10){S.ph=i.value;go('otp');}else if(i){i.focus();} },
+    hitStar: hitStar,
+    init: init
+  };
+})();
+
+window.LS.init();
+</script>
